@@ -5,7 +5,7 @@ from comments.forms import CommentForm
 def index(request):
 
     #文章集合 根据创建文章的时间排序
-    post_list = Post.objects.all().order_by('created_time')
+    post_list = Post.objects.all()
     return  render(request,'blog/index.html',context = {'post_list':post_list})
 
 def detail(request,pk):
@@ -34,15 +34,15 @@ def detail(request,pk):
 def archives(request,year,month):
     #filter进行过滤
     post_list = Post.objects.filter(created_time__year = year,
-                                    created_time__month = month,
-                                    ).order_by('created_time')
+                                    created_time__month = month
+                                    )
     return render(request,'blog/index.html',context = {'post_list': post_list})
 
 #分类
 def category(request,pk):
     cate = get_object_or_404(Category,pk=pk)
     #按照点击的分类名 进入其文章页面
-    post_list = Post.objects.filter(category=cate).order_by('created_time')
+    post_list = Post.objects.filter(category=cate)
     return render(request,'blog/index.html',context={'post_list':post_list})
 
 

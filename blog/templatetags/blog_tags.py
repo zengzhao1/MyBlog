@@ -7,7 +7,7 @@ register = template.Library()
 #获取数据库前5篇文章
 #最新文章模板
 def get_recent_post(num=5):
-    return Post.objects.all().order_by('created_time')[:num]
+    return Post.objects.all()[:num]
 
 #归档模板标签
 @register.simple_tag
