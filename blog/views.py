@@ -2,12 +2,26 @@ import markdown
 from django.shortcuts import render,get_object_or_404
 from .models import Post,Category
 from comments.forms import CommentForm
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 def index(request):
 
     #文章集合 根据创建文章的时间排序
     post_list = Post.objects.all()
-    return  render(request,'blog/index.html',context = {'post_list':post_list})
 
+    paginator = Paginator(post_list,2)
+
+    page = request.GET.get('page')
+
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:#用户请求页面不是整数,显示第一页
+        posts = paginator.page(1)
+    except EmptyPage:     #用户请求页面超过本身页面,显示最后一页
+        posts = paginator.page(paginator.num_pages)
+    return  render(request,'blog/index.html',context = {'posts' : posts})
+
+
+#显示文章详细页面
 def detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
 
