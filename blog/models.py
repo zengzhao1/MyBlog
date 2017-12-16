@@ -44,6 +44,13 @@ class Post(models.Model):
     #作者
     author = models.ForeignKey(User)
 
+    #新增博客阅读量
+    views = models.PositiveIntegerField(default = 0)
+
+    def increase_views(self):
+        self.views = self.views + 1
+        self.save(update_fields = ['views'])
+
     def __str__(self):
         return self.title
 
